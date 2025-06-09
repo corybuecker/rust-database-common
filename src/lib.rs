@@ -1,6 +1,7 @@
 use deadpool_postgres::{CreatePoolError, ManagerConfig, Pool, PoolError, Runtime};
 use thiserror::Error;
 use tokio_postgres::NoTls;
+pub use tokio_postgres::types::ToSql;
 
 #[derive(Debug, Clone)]
 pub struct DatabasePool {
