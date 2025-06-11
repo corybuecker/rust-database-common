@@ -6,4 +6,4 @@ edition = "2024"
 [dependencies]
 deadpool-postgres = "0.14.1"
 thiserror = "2.0.12"
-tokio-postgres = "0.7.13"
+tokio-postgres = { version = "0.7.13", features = ["with-chrono-0_4"] }
