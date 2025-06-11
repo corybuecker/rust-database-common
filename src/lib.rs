@@ -3,6 +3,8 @@ use thiserror::Error;
 use tokio_postgres::NoTls;
 pub use tokio_postgres::types::ToSql;
 
+pub type Client = deadpool_postgres::Client;
+
 #[derive(Debug, Clone)]
 pub struct DatabasePool {
     url: String,
