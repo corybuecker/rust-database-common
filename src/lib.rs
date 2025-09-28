@@ -1,9 +1,8 @@
-use deadpool_postgres::{CreatePoolError, ManagerConfig, Pool, PoolError, Runtime};
+pub use deadpool_postgres::GenericClient;
+use deadpool_postgres::{
+    CreatePoolError, ManagerConfig, Pool, PoolError, Runtime, tokio_postgres::NoTls,
+};
 use thiserror::Error;
-use tokio_postgres::NoTls;
-pub use tokio_postgres::types::ToSql;
-
-pub type Client = deadpool_postgres::Client;
 
 #[derive(Debug, Clone)]
 pub struct DatabasePool {
@@ -52,9 +51,10 @@ impl DatabasePool {
         Ok(())
     }
 
-    pub async fn get_client(&self) -> Result<deadpool_postgres::Client, DatabasePoolError> {
+    pub async fn get_client(&self) -> Result<impl GenericClient, DatabasePoolError> {
         if let Some(pool) = &self.pool {
-            pool.get().await.map_err(DatabasePoolError::PoolError)
+            let client = pool.get().await.map_err(DatabasePoolError::PoolError)?;
+            Ok(client)
         } else {
             Err(DatabasePoolError::NoPoolError)
         }
