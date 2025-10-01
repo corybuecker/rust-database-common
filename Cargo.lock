@@ -174,7 +174,7 @@ dependencies = [
  "deadpool",
  "getrandom 0.2.16",
  "tokio",
- "tokio-postgres 0.7.13 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tokio-postgres 0.7.13",
  "tracing",
 ]
 
@@ -480,7 +480,17 @@ version = "0.11.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1fd6780a80ae0c52cc120a26a1a42c1ae51b247a253e4e06113d23d2c2edd078"
 dependencies = [
- "phf_shared",
+ "phf_shared 0.11.3",
+]
+
+[[package]]
+name = "phf"
+version = "0.13.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c1562dc717473dbaa4c1f85a36410e03c047b2e7df7f45ee938fbef64ae7fadf"
+dependencies = [
+ "phf_shared 0.13.1",
+ "serde",
 ]
 
 [[package]]
@@ -488,6 +498,15 @@ name = "phf_shared"
 version = "0.11.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "67eabc2ef2a60eb7faa00097bd1ffdb5bd28e62bf39990626a582201b7a754e5"
+dependencies = [
+ "siphasher",
+]
+
+[[package]]
+name = "phf_shared"
+version = "0.13.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e57fef6bc5981e38c2ce2d63bfa546861309f875b8a75f092d1d54ae2d64f266"
 dependencies = [
  "siphasher",
 ]
@@ -524,8 +543,8 @@ dependencies = [
 
 [[package]]
 name = "postgres-protocol"
-version = "0.6.8"
-source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.13#ad68abfd48b39a433bb4127bf1ae140b9be64d9e"
+version = "0.6.9"
+source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.14#53a929e68cd1a43407eed26174f74892fe6d5bca"
 dependencies = [
  "base64",
  "byteorder",
@@ -547,19 +566,19 @@ checksum = "613283563cd90e1dfc3518d548caee47e0e725455ed619881f5cf21f36de4b48"
 dependencies = [
  "bytes",
  "fallible-iterator",
- "postgres-protocol 0.6.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "postgres-protocol 0.6.8",
 ]
 
 [[package]]
 name = "postgres-types"
-version = "0.2.9"
-source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.13#ad68abfd48b39a433bb4127bf1ae140b9be64d9e"
+version = "0.2.10"
+source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.14#53a929e68cd1a43407eed26174f74892fe6d5bca"
 dependencies = [
  "bytes",
  "chrono",
  "fallible-iterator",
- "postgres-protocol 0.6.8 (git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.13)",
- "serde",
+ "postgres-protocol 0.6.9",
+ "serde_core",
  "serde_json",
  "uuid",
 ]
@@ -641,7 +660,7 @@ version = "0.1.0"
 dependencies = [
  "deadpool-postgres",
  "thiserror",
- "tokio-postgres 0.7.13 (git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.13)",
+ "tokio-postgres 0.7.14",
 ]
 
 [[package]]
@@ -759,6 +778,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "socket2"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "233504af464074f9d066d7b5416c5f9b894a5862a6506e306f7b816cdd6f1807"
+dependencies = [
+ "libc",
+ "windows-sys 0.59.0",
+]
+
+[[package]]
 name = "stringprep"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -830,7 +859,7 @@ dependencies = [
  "libc",
  "mio",
  "pin-project-lite",
- "socket2",
+ "socket2 0.5.10",
  "windows-sys 0.52.0",
 ]
 
@@ -849,12 +878,12 @@ dependencies = [
  "log",
  "parking_lot",
  "percent-encoding",
- "phf",
+ "phf 0.11.3",
  "pin-project-lite",
- "postgres-protocol 0.6.8 (registry+https://github.com/rust-lang/crates.io-index)",
- "postgres-types 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
+ "postgres-protocol 0.6.8",
+ "postgres-types 0.2.9",
  "rand",
- "socket2",
+ "socket2 0.5.10",
  "tokio",
  "tokio-util",
  "whoami",
@@ -862,8 +891,8 @@ dependencies = [
 
 [[package]]
 name = "tokio-postgres"
-version = "0.7.13"
-source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.13#ad68abfd48b39a433bb4127bf1ae140b9be64d9e"
+version = "0.7.14"
+source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.14#53a929e68cd1a43407eed26174f74892fe6d5bca"
 dependencies = [
  "async-trait",
  "byteorder",
@@ -874,12 +903,12 @@ dependencies = [
  "log",
  "parking_lot",
  "percent-encoding",
- "phf",
+ "phf 0.13.1",
  "pin-project-lite",
- "postgres-protocol 0.6.8 (git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.13)",
- "postgres-types 0.2.9 (git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.13)",
+ "postgres-protocol 0.6.9",
+ "postgres-types 0.2.10",
  "rand",
- "socket2",
+ "socket2 0.6.0",
  "tokio",
  "tokio-util",
  "whoami",
