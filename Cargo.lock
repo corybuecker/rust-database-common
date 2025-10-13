@@ -544,7 +544,7 @@ dependencies = [
 [[package]]
 name = "postgres-protocol"
 version = "0.6.9"
-source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.14#53a929e68cd1a43407eed26174f74892fe6d5bca"
+source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.15#47374383727e80fb5d3eec966d9bd2f6f907c48d"
 dependencies = [
  "base64",
  "byteorder",
@@ -571,8 +571,8 @@ dependencies = [
 
 [[package]]
 name = "postgres-types"
-version = "0.2.10"
-source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.14#53a929e68cd1a43407eed26174f74892fe6d5bca"
+version = "0.2.11"
+source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.15#47374383727e80fb5d3eec966d9bd2f6f907c48d"
 dependencies = [
  "bytes",
  "chrono",
@@ -660,7 +660,7 @@ version = "0.1.0"
 dependencies = [
  "deadpool-postgres",
  "thiserror",
- "tokio-postgres 0.7.14",
+ "tokio-postgres 0.7.15",
 ]
 
 [[package]]
@@ -891,8 +891,8 @@ dependencies = [
 
 [[package]]
 name = "tokio-postgres"
-version = "0.7.14"
-source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.14#53a929e68cd1a43407eed26174f74892fe6d5bca"
+version = "0.7.15"
+source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.15#47374383727e80fb5d3eec966d9bd2f6f907c48d"
 dependencies = [
  "async-trait",
  "byteorder",
@@ -906,7 +906,7 @@ dependencies = [
  "phf 0.13.1",
  "pin-project-lite",
  "postgres-protocol 0.6.9",
- "postgres-types 0.2.10",
+ "postgres-types 0.2.11",
  "rand",
  "socket2 0.6.0",
  "tokio",
