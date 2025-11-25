@@ -17,7 +17,7 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+    - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
     - uses: github/codeql-action/init@16df4fbc19aea13d921737861d6c622bf3cefe23
       with:
         languages: rust
