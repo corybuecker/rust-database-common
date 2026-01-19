@@ -360,6 +360,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d750af042f7ef4f724306de029d18836c26c1765a54a6a3f094cbd23a7267ffa"
 
 [[package]]
+name = "libredox"
+version = "0.1.12"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3d0b95e02c851351f877147b7deea7b1afb1df71b63aa5f8270716e0c5720616"
+dependencies = [
+ "bitflags",
+ "libc",
+]
+
+[[package]]
 name = "lock_api"
 version = "0.4.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -543,8 +553,8 @@ dependencies = [
 
 [[package]]
 name = "postgres-protocol"
-version = "0.6.9"
-source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.15#47374383727e80fb5d3eec966d9bd2f6f907c48d"
+version = "0.6.10"
+source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.16#b7f2cf0891c1a30b37f7df3ae3f1960affc036f3"
 dependencies = [
  "base64",
  "byteorder",
@@ -571,13 +581,13 @@ dependencies = [
 
 [[package]]
 name = "postgres-types"
-version = "0.2.11"
-source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.15#47374383727e80fb5d3eec966d9bd2f6f907c48d"
+version = "0.2.12"
+source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.16#b7f2cf0891c1a30b37f7df3ae3f1960affc036f3"
 dependencies = [
  "bytes",
  "chrono",
  "fallible-iterator",
- "postgres-protocol 0.6.9",
+ "postgres-protocol 0.6.10",
  "serde_core",
  "serde_json",
  "uuid",
@@ -660,7 +670,7 @@ version = "0.1.0"
 dependencies = [
  "deadpool-postgres",
  "thiserror",
- "tokio-postgres 0.7.15",
+ "tokio-postgres 0.7.16",
 ]
 
 [[package]]
@@ -817,16 +827,16 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "2.0.17"
-source = "git+https://github.com/dtolnay/thiserror?tag=2.0.17#72ae716e6d6a7f7fdabdc394018c745b4d39ca45"
+version = "2.0.18"
+source = "git+https://github.com/dtolnay/thiserror?tag=2.0.18#dc0f6a23a3fb6ae34ef117133ec43650450c4b32"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "2.0.17"
-source = "git+https://github.com/dtolnay/thiserror?tag=2.0.17#72ae716e6d6a7f7fdabdc394018c745b4d39ca45"
+version = "2.0.18"
+source = "git+https://github.com/dtolnay/thiserror?tag=2.0.18#dc0f6a23a3fb6ae34ef117133ec43650450c4b32"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -886,13 +896,13 @@ dependencies = [
  "socket2 0.5.10",
  "tokio",
  "tokio-util",
- "whoami",
+ "whoami 1.6.0",
 ]
 
 [[package]]
 name = "tokio-postgres"
-version = "0.7.15"
-source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.15#47374383727e80fb5d3eec966d9bd2f6f907c48d"
+version = "0.7.16"
+source = "git+https://github.com/rust-postgres/rust-postgres?tag=tokio-postgres-v0.7.16#b7f2cf0891c1a30b37f7df3ae3f1960affc036f3"
 dependencies = [
  "async-trait",
  "byteorder",
@@ -905,13 +915,13 @@ dependencies = [
  "percent-encoding",
  "phf 0.13.1",
  "pin-project-lite",
- "postgres-protocol 0.6.9",
- "postgres-types 0.2.11",
+ "postgres-protocol 0.6.10",
+ "postgres-types 0.2.12",
  "rand",
  "socket2 0.6.0",
  "tokio",
  "tokio-util",
- "whoami",
+ "whoami 2.0.2",
 ]
 
 [[package]]
@@ -1029,6 +1039,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b8dad83b4f25e74f184f64c43b150b91efe7647395b42289f38e50566d82855b"
 
 [[package]]
+name = "wasite"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "66fe902b4a6b8028a753d5424909b764ccf79b7a209eac9bf97e59cda9f71a42"
+dependencies = [
+ "wasi 0.14.2+wasi-0.2.4",
+]
+
+[[package]]
 name = "wasm-bindgen"
 version = "0.2.100"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1103,7 +1122,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6994d13118ab492c3c80c1f81928718159254c53c472bf9ce36f8dae4add02a7"
 dependencies = [
  "redox_syscall",
- "wasite",
+ "wasite 0.1.0",
+ "web-sys",
+]
+
+[[package]]
+name = "whoami"
+version = "2.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ace4d5c7b5ab3d99629156d4e0997edbe98a4beb6d5ba99e2cae830207a81983"
+dependencies = [
+ "libredox",
+ "wasite 1.0.2",
  "web-sys",
 ]
 
