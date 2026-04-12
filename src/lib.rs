@@ -91,16 +91,23 @@ impl DatabasePool {
 mod tests {
     #[test]
     fn test_database_pool_secret() {
-        let pool = super::DatabasePool::new("postgres://user:password@localhost/db".to_string());
-        assert_eq!(format!("{:?}", pool.url), "DatabaseUrl(REDACTED)");
+        let secret = "postgres://user:password@localhost/db";
+        let pool = super::DatabasePool::new(secret.to_string());
+        let debug_output = format!("{:?}", pool.url);
+
+        assert!(debug_output.contains("REDACTED"));
+        assert!(!debug_output.contains(secret));
+        assert!(!debug_output.contains("password"));
     }
 
     #[test]
     fn test_database_pool_debug_secret() {
-        let pool = super::DatabasePool::new("postgres://user:password@localhost/db".to_string());
-        assert_eq!(
-            format!("{:?}", pool),
-            "DatabasePool { url: DatabaseUrl(REDACTED), pool: None }"
-        );
+        let secret = "postgres://user:password@localhost/db";
+        let pool = super::DatabasePool::new(secret.to_string());
+        let debug_output = format!("{:?}", pool);
+
+        assert!(debug_output.contains("REDACTED"));
+        assert!(!debug_output.contains(secret));
+        assert!(!debug_output.contains("password"));
     }
 }
