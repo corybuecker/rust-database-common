@@ -19,7 +19,7 @@ Add this crate to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-rust-database-common = { git = "https://github.com/corybuecker/rust-database-common", branch = "main" }
+rust-database-common = { git = "https://github.com/corybuecker/rust-database-common", tag = "v1.0.0" }
 ```
 
 ### Example
