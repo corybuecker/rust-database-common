@@ -1,0 +1,13 @@
+{
+	"name": "Debian",
+	"image": "mcr.microsoft.com/devcontainers/base:trixie",
+	"runArgs": [
+		"--cap-drop=ALL"
+	],
+	"features": {
+		"ghcr.io/devcontainers/features/rust:1.5.0": {
+			"version": "1.94.1",
+			"profile": "default"
+		}
+	}
+}

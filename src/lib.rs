@@ -4,9 +4,32 @@ use deadpool_postgres::{
 };
 use thiserror::Error;
 
+/// A wrapper around a database URL that prevents the value from being
+/// accidentally exposed via `Debug` or `Display`.
+#[derive(Clone)]
+struct DatabaseUrl(String);
+
+impl DatabaseUrl {
+    fn expose(&self) -> &str {
+        &self.0
+    }
+}
+
+impl std::fmt::Debug for DatabaseUrl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("DatabaseUrl(REDACTED)")
+    }
+}
+
+impl std::fmt::Display for DatabaseUrl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("DatabaseUrl(REDACTED)")
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct DatabasePool {
-    url: String,
+    url: DatabaseUrl,
     pub pool: Option<Pool>,
 }
 
@@ -25,13 +48,16 @@ pub enum DatabasePoolError {
 impl DatabasePool {
     /// Create a new DatabasePool with the given URL.
     pub fn new(url: String) -> Self {
-        DatabasePool { url, pool: None }
+        DatabasePool {
+            url: DatabaseUrl(url),
+            pool: None,
+        }
     }
 
     /// Connects to the database and initializes the pool.
     pub async fn connect(&mut self) -> Result<(), DatabasePoolError> {
         let config = deadpool_postgres::Config {
-            url: Some(self.url.clone()),
+            url: Some(self.url.expose().to_owned()),
             manager: Some(ManagerConfig {
                 recycling_method: deadpool_postgres::RecyclingMethod::Verified,
             }),
@@ -61,45 +87,20 @@ impl DatabasePool {
     }
 }
 
-// Legacy code for handling database connection retries manually.
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn test_database_pool_secret() {
+        let pool = super::DatabasePool::new("postgres://user:password@localhost/db".to_string());
+        assert_eq!(format!("{:?}", pool.url), "DatabaseUrl(REDACTED)");
+    }
 
-// async fn database_connection_handler(client: Arc<RwLock<Client>>) {
-//     // Get the database URL from the environment variable
-//     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL not set");
-
-//     loop {
-//         // Try to connect to the database
-//         let (replacement_client, connection) = match connect(&database_url, NoTls).await {
-//             Ok((client, connection)) => {
-//                 info!("Connected to database");
-//                 (client, connection)
-//             }
-//             // If connection fails, log the error and retry after 5 seconds
-//             Err(e) => {
-//                 tracing::error!("Failed to connect to database: {}", e);
-//                 sleep_until(tokio::time::Instant::now() + Duration::from_secs(5)).await;
-//                 continue;
-//             }
-//         };
-
-//         // Replace the current client with the new one.
-//         // Acquire a write lock on the Arc-wrapped RwLock<Client> to ensure exclusive access,
-//         // so that no other task is reading or writing to the client while we update it.
-//         let mut guard = client.write().await;
-
-//         // Overwrite the existing client with the newly established replacement_client.
-//         // This allows the rest of the application to transparently use the new connection
-//         // without needing to restart or reinitialize any consumers of the client.
-//         *guard = replacement_client;
-
-//         // Explicitly drop the guard to release the write lock as soon as possible,
-//         // allowing other tasks to acquire the lock and use the updated client.
-//         drop(guard);
-
-//         // Wait for the connection to finish, log errors if any, and loop to reconnect
-//         if let Err(e) = connection.await {
-//             error!("Connection error: {}", e);
-//             continue;
-//         }
-//     }
-// }
+    #[test]
+    fn test_database_pool_debug_secret() {
+        let pool = super::DatabasePool::new("postgres://user:password@localhost/db".to_string());
+        assert_eq!(
+            format!("{:?}", pool),
+            "DatabasePool { url: DatabaseUrl(REDACTED), pool: None }"
+        );
+    }
+}
