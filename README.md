@@ -36,7 +36,7 @@ async fn main() {
 }
 ```
 
-# Improvements
+## Improvements
 
 The following items are planned for future improvements:
 
