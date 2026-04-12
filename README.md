@@ -36,6 +36,12 @@ async fn main() {
 }
 ```
 
+## Improvements
+
+The following items are planned for future improvements:
+
+* Support optional TLS for database connection
+
 ## Notes
 
 - This README was written by AI.
