@@ -9,35 +9,35 @@ use thiserror::Error;
 /// A wrapper around a database URL that prevents the value from being
 /// accidentally exposed via `Debug` or `Display`.
 #[derive(Clone)]
-struct DatabaseUrl(String);
+struct SensitiveString(String);
 
-impl DatabaseUrl {
+impl SensitiveString {
     fn expose(&self) -> &str {
         &self.0
     }
 }
 
-impl std::fmt::Debug for DatabaseUrl {
+impl std::fmt::Debug for SensitiveString {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str("DatabaseUrl(REDACTED)")
+        f.write_str("SensitiveString(REDACTED)")
     }
 }
 
-impl std::fmt::Display for DatabaseUrl {
+impl std::fmt::Display for SensitiveString {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str("DatabaseUrl(REDACTED)")
+        f.write_str("SensitiveString(REDACTED)")
     }
 }
 
 #[derive(Debug, Clone)]
 pub enum SslMode {
     Disable,
-    Require { ca_cert_pem: String },
+    Require { ca_cert_pem: SensitiveString },
 }
 
 #[derive(Debug, Clone)]
 pub struct DatabasePool {
-    url: DatabaseUrl,
+    url: SensitiveString,
     pool: Option<Pool>,
     ssl_mode: SslMode,
 }
@@ -60,14 +60,16 @@ pub enum DatabasePoolError {
 impl DatabasePool {
     pub fn new(url: String) -> Self {
         DatabasePool {
-            url: DatabaseUrl(url),
+            url: SensitiveString(url),
             pool: None,
             ssl_mode: SslMode::Disable,
         }
     }
 
-    pub fn with_ssl_mode(mut self, ssl_mode: SslMode) -> Self {
-        self.ssl_mode = ssl_mode;
+    pub fn with_required_ssl_mode(mut self, ca_cert_pem: String) -> Self {
+        self.ssl_mode = SslMode::Require {
+            ca_cert_pem: SensitiveString(ca_cert_pem),
+        };
         self.pool = None;
         self
     }
@@ -84,7 +86,7 @@ impl DatabasePool {
         let pool = match &self.ssl_mode {
             SslMode::Disable => config.create_pool(Some(Runtime::Tokio1), NoTls),
             SslMode::Require { ca_cert_pem } => {
-                let ca_certificate = Certificate::from_pem(ca_cert_pem.as_bytes())
+                let ca_certificate = Certificate::from_pem(ca_cert_pem.expose().as_bytes())
                     .map_err(DatabasePoolError::TlsError)?;
 
                 let native_tls_connector = TlsConnector::builder()
@@ -152,7 +154,7 @@ mod tests {
         let pool = DatabasePool::new(secret.to_string());
         let display_output = format!("{}", pool.url);
 
-        assert_eq!(display_output, "DatabaseUrl(REDACTED)");
+        assert_eq!(display_output, "SensitiveString(REDACTED)");
         assert!(!display_output.contains(secret));
         assert!(!display_output.contains("password"));
     }
@@ -169,14 +171,12 @@ mod tests {
         let original = DatabasePool::new("postgres://localhost/db".to_string());
         let cert = "-----BEGIN CERTIFICATE-----\nabc\n-----END CERTIFICATE-----".to_string();
 
-        let updated = original.clone().with_ssl_mode(SslMode::Require {
-            ca_cert_pem: cert.clone(),
-        });
+        let updated = original.clone().with_required_ssl_mode(cert.clone());
 
         assert!(matches!(original.ssl_mode, SslMode::Disable));
         assert!(matches!(
             updated.ssl_mode,
-            SslMode::Require { ca_cert_pem } if ca_cert_pem == cert
+            SslMode::Require { ca_cert_pem } if ca_cert_pem.expose() == cert
         ));
         assert!(updated.pool.is_none());
     }
