@@ -22,7 +22,7 @@ Add this crate to your `Cargo.toml`:
 rust-database-common = { git = "https://github.com/corybuecker/rust-database-common", tag = "v1.0.0" }
 ```
 
-### Example
+### Non-TLS example
 
 ```rust
 use rust_database_common::DatabasePool;
@@ -31,16 +31,27 @@ use rust_database_common::DatabasePool;
 async fn main() {
     let mut db_pool = DatabasePool::new("postgres://user:password@localhost/dbname".to_string());
     db_pool.connect().await.expect("Failed to connect to database");
+
     let client = db_pool.get_client().await.expect("Failed to get client");
     // Use `client` as a regular tokio_postgres::Client
 }
 ```
 
-## Improvements
+### TLS example
 
-The following items are planned for future improvements:
+```rust
+use rust_database_common::{DatabasePool, SslMode};
 
-* Support optional TLS for database connection
+#[tokio::main]
+async fn main() {
+    let ca_cert_pem = std::fs::read_to_string("./ca.pem").expect("Failed to read CA cert");
+
+    let mut db_pool = DatabasePool::new("postgres://user:password@localhost/dbname".to_string())
+        .with_required_ssl_mode(ca_cert_pem);
+
+    db_pool.connect().await.expect("Failed to connect to database");
+}
+```
 
 ## Notes
 
