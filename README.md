@@ -45,10 +45,8 @@ use rust_database_common::{DatabasePool, SslMode};
 async fn main() {
     let ca_cert_pem = std::fs::read_to_string("./ca.pem").expect("Failed to read CA cert");
 
-    let mut db_pool = DatabasePool::new_with_ssl_mode(
-        "postgres://user:password@localhost/dbname".to_string(),
-        SslMode::Require { ca_cert_pem },
-    );
+    let mut db_pool = DatabasePool::new("postgres://user:password@localhost/dbname".to_string())
+        .with_ssl_mode(SslMode::Require { ca_cert_pem });
 
     db_pool.connect().await.expect("Failed to connect to database");
 }
