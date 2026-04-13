@@ -22,7 +22,7 @@ Add this crate to your `Cargo.toml`:
 rust-database-common = { git = "https://github.com/corybuecker/rust-database-common", tag = "v1.0.0" }
 ```
 
-### Example
+### Non-TLS example
 
 ```rust
 use rust_database_common::DatabasePool;
@@ -36,7 +36,7 @@ async fn main() {
 }
 ```
 
-### TLS Example
+### TLS example
 
 ```rust
 use rust_database_common::{DatabasePool, SslMode};
