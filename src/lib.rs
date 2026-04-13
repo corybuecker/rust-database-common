@@ -30,7 +30,7 @@ impl std::fmt::Display for SensitiveString {
 }
 
 #[derive(Debug, Clone)]
-pub enum SslMode {
+enum SslMode {
     Disable,
     Require { ca_cert_pem: SensitiveString },
 }
