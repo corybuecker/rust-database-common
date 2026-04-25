@@ -2,7 +2,8 @@
 	"name": "Debian",
 	"image": "mcr.microsoft.com/devcontainers/base:trixie",
 	"runArgs": [
-		"--cap-drop=ALL"
+		"--cap-drop=ALL",
+		"--security-opt=no-new-privileges"
 	],
 	"features": {
 		"ghcr.io/devcontainers/features/rust:1.5.0": {
